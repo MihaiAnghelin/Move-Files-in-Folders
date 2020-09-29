@@ -14,20 +14,24 @@ def gen_find(filepat,top):
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         
+        print('New Files Received')
         htmlFileName = "test.html"
         
+        print('Waiting for new files to be loaded')
         time.sleep(20)
         # Move css files in the main folder
         filesToMove = gen_find("*css", folder_to_track)
         for name in filesToMove:
             shutil.move(name, folder_to_track)
 
+        print('Getting the html file name')
         time.sleep(3)
         # Get the html file name
         for filename in os.listdir(folder_to_track):
             if filename.endswith(".html"):
                 htmlFileName = filename
 
+        print('Moving the files to the new location')
         time.sleep(3)  
         # Move the html and css files in the destination folder     
         for filename in os.listdir(folder_to_track):
@@ -43,6 +47,7 @@ class MyHandler(FileSystemEventHandler):
                 new_destination = folder_destination + "/" + new_name
                 os.rename(src, new_destination)
         
+        print("Removoing the remaining files")
         time.sleep(3)
         # Remove the remaining files from the initial folder
         for filename in os.listdir(folder_to_track):
@@ -54,6 +59,8 @@ class MyHandler(FileSystemEventHandler):
                     shutil.rmtree(file_path)
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+        print('Proccess End Successfully\n\n')
 
 folder_to_track = 'F:/Desktop/Indesign Output'
 folder_destination = 'F:/Desktop/Final Output'
